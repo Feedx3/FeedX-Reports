@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeedX UX Review - Dark Theme Example</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif; background: #0a0a0a; color: #e0e0e0; line-height: 1.6; padding: 24px 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    
+    .header { text-align: center; padding: 48px 0 32px; border-bottom: 1px solid #1a1a2e; margin-bottom: 32px; }
+    .header .logo { font-size: 14px; font-weight: 600; color: #a78bfa; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .header h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .header p { color: #666; }
+    .header .url-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 8px 20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #a78bfa33; border-radius: 20px; font-size: 13px; color: #a78bfa; text-decoration: none; }
+    
+    .section { margin-bottom: 32px; background: #111118; border-radius: 16px; padding: 28px; border: 1px solid #1a1a2e; }
+    .section-label { font-size: 11px; font-weight: 700; color: #a78bfa; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    
+    .question-card { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #a78bfa33; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .question-number { display: inline-block; min-width: 28px; height: 28px; background: #a78bfa; color: #0a0a0a; border-radius: 8px; font-weight: 700; font-size: 13px; line-height: 28px; text-align: center; }
+    .question-text { font-size: 15px; color: #b0b0b0; font-style: italic; margin-top: 12px; }
+    
+    .answer-item { background: #0d0d14; border: 1px solid #1a1a2e; border-radius: 12px; padding: 24px; }
+    .answer-item h4 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: 700; }
+    .badge-yes { background: #0d2818; color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+    .answer-item ul { margin-left: 20px; }
+    .answer-item li { color: #999; margin-bottom: 8px; }
+    
+    .llm-section { background: #0d0d14; border: 1px solid #1a1a2e; }
+    .llm-content { background: #0a0a0a; padding: 20px; border-radius: 8px; font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 13px; color: #8888aa; line-height: 1.7; overflow-x: auto; border: 1px solid #1a1a2e; white-space: pre-wrap; }
+    
+    .footer { text-align: center; padding: 32px 0; border-top: 1px solid #1a1a2e; }
+    .footer p { font-size: 12px; color: #444; }
+    .footer a { color: #a78bfa; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🎨 FEEDX REVIEW</div>
+      <h1>example.com</h1>
+      <p>Dark-themed UX review example</p>
+      <a href="https://example.com" target="_blank" class="url-badge">🔗 https://example.com</a>
+    </div>
+    
+    <div class="section">
+      <div class="section-label">❓ YOUR QUESTIONS</div>
+      <div class="question-card">
+        <span class="question-number">1</span>
+        <p class="question-text">Is this design good for a modern web app?</p>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-label">📊 DETAILED FEEDBACK</div>
+      <div class="answer-item">
+        <h4>✅ Assessment</h4>
+        <p><strong>Verdict:</strong> <span class="badge badge-yes">Yes - Good</span></p>
+        <p>Clean and professional design suitable for modern web applications.</p>
+        <p><strong>Strengths:</strong></p>
+        <ul>
+          <li>Clear visual hierarchy</li>
+          <li>Good contrast and readability</li>
+          <li>Consistent styling throughout</li>
+          <li>Responsive design elements</li>
+        </ul>
+        <p><strong>Recommendations:</strong></p>
+        <ul>
+          <li>Enhance CTA visibility for better conversion</li>
+          <li>Test color contrast for accessibility compliance</li>
+          <li>Consider adding social proof elements</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="section llm-section">
+      <h4>🤖 LLM Iteration Prompt</h4>
+      <div class="llm-content">Copy this prompt to iterate with AI:
+
+"I just received a FeedX UX review for my website example.com. Key findings:
+- Overall verdict: Yes - Good
+- Clean visual hierarchy with consistent styling
+- Good contrast and readability
+
+I need help with:
+1. Writing stronger CTAs for conversion
+2. Optimizing color for WCAG accessibility
+3. Adding social proof elements that build trust
+4. Improving mobile-specific UX patterns
+
+Please provide specific, actionable recommendations focusing on user engagement and conversion optimization."</div>
+    </div>
+    
+    <div class="footer">
+      <p>Powered by <a href="#">feedX</a> — AI-powered UX analyst</p>
+      <p>Dark-themed report • Decentralized via IPFS</p>
+    </div>
+  </div>
+</body>
+</html>

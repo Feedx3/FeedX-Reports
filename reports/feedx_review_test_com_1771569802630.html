@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeedX Review - test.com</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 24px 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 48px 0 32px;
+      border-bottom: 1px solid #1a1a2e;
+      margin-bottom: 32px;
+    }
+    
+    .header .logo {
+      font-size: 14px;
+      font-weight: 600;
+      color: #a78bfa;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .header .url-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid #a78bfa33;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #a78bfa;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .header .url-badge:hover {
+      background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+      border-color: #a78bfa66;
+    }
+    
+    /* Section Cards */
+    .section {
+      margin-bottom: 32px;
+      background: #111118;
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid #1a1a2e;
+    }
+    
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a78bfa;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .section-label .icon {
+      font-size: 16px;
+    }
+    
+    /* Question Cards */
+    .question-card {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid #a78bfa33;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .question-number {
+      display: inline-block;
+      min-width: 28px;
+      height: 28px;
+      background: #a78bfa;
+      color: #0a0a0a;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 28px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    
+    .question-text {
+      font-size: 15px;
+      color: #b0b0b0;
+      font-style: italic;
+    }
+    
+    /* Answer Items */
+    .answer-item {
+      background: #0d0d14;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .answer-item h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    
+    .answer-item p {
+      font-size: 15px;
+      color: #b0b0b0;
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+    
+    .answer-item strong {
+      color: #e0e0e0;
+    }
+    
+    .answer-item ul {
+      margin-left: 20px;
+      margin-top: 12px;
+    }
+    
+    .answer-item li {
+      color: #999;
+      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    
+    .badge-yes {
+      background: #0d2818;
+      color: #4ade80;
+      border: 1px solid #4ade8033;
+    }
+    
+    .badge-rating {
+      background: #2a2000;
+      color: #fbbf24;
+      border: 1px solid #fbbf2433;
+    }
+    
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px dashed #1a1a2e;
+      margin: 24px 0;
+      opacity: 0.5;
+    }
+    
+    /* LLM Prompt Section */
+    .llm-section {
+      background: #0d0d14;
+      border: 1px solid #1a1a2e;
+    }
+    
+    .llm-section h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .llm-section .llm-subtitle {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    
+    .llm-content {
+      background: #0a0a0a;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 13px;
+      color: #8888aa;
+      line-height: 1.7;
+      overflow-x: auto;
+      border: 1px solid #1a1a2e;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px 0;
+      border-top: 1px solid #1a1a2e;
+      margin-top: 16px;
+    }
+    
+    .footer p {
+      font-size: 12px;
+      color: #444;
+    }
+    
+    .footer a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    
+    /* Mobile */
+    @media (max-width: 640px) {
+      .section { padding: 20px; }
+      .answer-item { padding: 18px; }
+      .llm-content { padding: 14px; font-size: 12px; }
+      .header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">🎨 FEEDX REVIEW</div>
+      <h1>test.com</h1>
+      <p>AI-Powered UX Analyst</p>
+      <a href="https://test.com" target="_blank" class="url-badge">
+        <span>🔗</span> https://test.com
+      </a>
+    </div>
+    
+    <!-- Questions Section -->
+    <div class="section">
+      <div class="section-label"><span class="icon">❓</span> YOUR QUESTIONS</div>
+
+    <div class="question-card">
+      <span class="question-number">1</span>
+      <p class="question-text">Is this design good?</p>
+    </div>
+  
+    </div>
+    
+    <!-- Detailed Feedback Section -->
+    <div class="section">
+      <div class="section-label"><span class="icon">📊</span> DETAILED FEEDBACK</div>
+
+      <div class="answer-item">
+        <h4>✅ Assessment</h4>
+        <p><strong>Verdict:</strong> <span class="badge badge-yes">Yes - Good</span></p>
+        <p>The chosen elements are clean, readable, and well-suited for a digital platform. The design follows modern aesthetic principles appropriately.</p>
+        <p><strong>Strengths:</strong></p>
+        <ul>
+          <li>Clear readability</li>
+          <li>Modern design language</li>
+          <li>Good contrast and accessibility</li>
+          <li>Consistent styling</li>
+        </ul>
+      </div>
+    
+    </div>
+    
+    <!-- LLM Prompt Section -->
+    <div class="section llm-section">
+      <h4><span>🤖</span> Continue with AI</h4>
+      <div class="llm-subtitle">Copy this prompt to iterate:</div>
+      <div class="llm-content"># 🤖 LLM Prompt for Iteration
+
+Copy this prompt to continue improving the UX based on the review above:
+
+---
+"I just received a FeedX UX review for test.com. Here are the questions and findings:
+
+- Question 1: Is this design good?
+
+Key Issues Identified:
+- Use these findings to rewrite key messaging
+- Enhance visual elements based on the assessment
+- Consider the specific concerns raised in each question
+
+Help me create specific, actionable iterations for the above points. Focus on clarity, relevance to our target users, and a strong call-to-action."
+---</div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p>Powered by <a href="#">feedX</a> — helping builders build right</p>
+      <p style="margin-top: 8px;">Generated Feb 20, 2026, 06:43 AM</p>
+    </div>
+  </div>
+</body>
+</html>
