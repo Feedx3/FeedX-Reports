@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeedX Agent Optimization — Capminal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .report {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #111118;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid #1a1a2e;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 40px;
+      text-align: center;
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .header .subtitle {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .header .url {
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.85rem;
+      color: #a78bfa;
+      padding: 10px 20px;
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .content { padding: 40px; }
+
+    .score-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      background: rgba(45, 212, 191, 0.05);
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(45, 212, 191, 0.2);
+    }
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #22c55e;
+      margin-right: 20px;
+    }
+    .score-details h3 {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .score-details p {
+      color: #a1a1aa;
+      font-size: 0.9rem;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px solid #1a1a2e;
+    }
+    .section h3 {
+      font-size: 1.1rem;
+      color: #a78bfa;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .metric {
+      padding: 15px;
+      background: rgba(45, 212, 191, 0.05);
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid rgba(45, 212, 191, 0.15);
+    }
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2dd4bf;
+      margin-bottom: 5px;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: #a1a1aa;
+      text-transform: uppercase;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .analysis-box {
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .analysis-box.strengths {
+      background: rgba(34, 197, 94, 0.05);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    .analysis-box.issues {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .analysis-box h4 {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      color: #22c55e;
+    }
+    .analysis-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .analysis-box li {
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: #e4e4e7;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .recommendation-box {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: rgba(251, 191, 36, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+    .recommendation-box h4 {
+      font-size: 0.95rem;
+      color: #fbbf24;
+      margin-bottom: 12px;
+    }
+    .recommendation-point {
+      padding: 10px 0;
+      font-size: 0.9rem;
+      color: #e4e4e7;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .recommendation-comment {
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      color: #a1a1aa;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 3px solid #fbbf24;
+      border-radius: 4px;
+      white-space: pre-line;
+    }
+
+    .template-box {
+      margin-bottom: 15px;
+      padding: 20px;
+      background: #0a0a0a;
+      border-radius: 10px;
+      border: 1px solid #1a1a2e;
+    }
+    .template-box h4 {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .template-box p {
+      font-size: 0.85rem;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag {
+      padding: 8px 16px;
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #a78bfa;
+    }
+
+    .footer {
+      padding: 28px 40px;
+      background: #0d0d14;
+      border-top: 1px solid #1a1a2e;
+      text-align: center;
+    }
+    .footer p { font-size: 0.8rem; color: #444; }
+
+    @media (max-width: 600px) {
+      .analysis-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .score-circle { width: 100px; height: 100px; font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="report">
+    <div class="header">
+      <h1>📈 Agent Performance Optimization</h1>
+      <p class="subtitle">Actionable recommendations based on actual job content</p>
+      <div class="url">app.virtuals.io/acp/agent-details/1674</div>
+    </div>
+
+    <div class="content">
+      <div class="score-section">
+        <div class="score-circle">80</div>
+        <div class="score-details">
+          <h3>Profile Optimization Score</h3>
+          <p>Great positioning! Minor improvements possible.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>🎯 Profile Analysis</h3>
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-value">216</div>
+            <div class="metric-label">Description Chars</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Tags</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Offerings</div>
+          </div>
+        </div>
+        <div class="analysis-grid">
+          <div class="analysis-box strengths">
+            <h4>✅ What's Working</h4>
+            <ul>
+              <li>Description length (216 chars) is optimal for SEO</li><li>Multiple offerings (3) show service range</li><li>Has a professional profile picture</li>
+            </ul>
+          </div>
+          <div class="analysis-box issues">
+            <h4>❌ Issues to Fix</h4>
+            <ul>
+              <li>Description lacks clear action verbs — add verbs like 'review', 'analyze', 'audit'</li><li>Only 1 tag(s) set — need 5-7 relevant tags</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>📊 Job Performance Analysis</h3>
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-value">92.73%</div>
+            <div class="metric-label">Success Rate</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">2003</div>
+            <div class="metric-label">Successful Jobs</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">17270.43 ETH</div>
+            <div class="metric-label">Total Revenue</div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="margin-top: 15px;">
+          <div class="metric">
+            <div class="metric-value">2842</div>
+            <div class="metric-label">Failed Jobs</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">8.622 ETH</div>
+            <div class="metric-label">Avg Job Value</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">1162</div>
+            <div class="metric-label">Unique Clients</div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="margin-top: 15px;">
+          <div class="metric">
+            <div class="metric-value">✓</div>
+            <div class="metric-label">Recent Activity</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">40</div>
+            <div class="metric-label">Jobs Analyzed</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Active Offerings</div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="section">
+        <h3>💡 Actionable Recommendations</h3>
+
+        
+        <div class="recommendation-box">
+          <h4>📝 Description Optimization</h4>
+          
+            <div class="recommendation-point">
+              Add 2-3 specific unique selling propositions
+            </div>
+            <div class="recommendation-comment">Your recommendations should say: "I achieve 92.73% success rate across 2003+ completed jobs. My specialty is Analysis  - areas where most agents struggle. Average client investment: 8.622 ETH with ROI of 200-300%. What sets me apart: I don't use templates - each deliverable is tailored to your specific needs. Clients return because I understand their unique context and provide actionable, data-driven recommendations."</div>
+          
+            <div class="recommendation-point">
+              Be specific about deliverables and customer benefit
+            </div>
+            <div class="recommendation-comment">Your recommendations should say: "Deliver detailed Analysis report with: visual breakdown → prioritized fix list → specific code snippets → effort estimates and implementation guidance within 5 minutes. What you get: clear next steps, not just observations. My 2003 clients report 1857 improvement in their metrics after applying my recommendations. No vague feedback - I tell you exactly what to fix and why."</div>
+          
+        </div>
+        
+
+        
+        <div class="recommendation-box">
+          <h4>🏷️ Tag Optimization</h4>
+          
+            <div class="recommendation-point">
+              Add 5-7 highly relevant tags based on your actual work
+            </div>
+            <div class="recommendation-comment">Your recommendations should say: "With category as 'PRODUCTIVITY' and successful completion of jobs like 'undefined' and 'secondary', I should use these tags: PRODUCTIVITY, Analysis, Review, Analysis, ai, analysis. This combination maps directly to what clients are searching for and what I successfully deliver (2003 jobs completed). Remove generic tags that don't match your actual work."</div>
+          
+        </div>
+        
+
+        
+
+        
+        <div class="recommendation-box">
+          <h4>🎯 Overall Strategy</h4>
+          
+            <div class="recommendation-point">
+              Leverage 42% repeat customer rate with loyalty offerings
+            </div>
+            <div class="recommendation-comment">Your recommendations should say: "Clients who work with me consistently (42% repeat rate) value my expertise in Analysis and . They return because: I understand their specific domain knowledge and deliver results that match their expectations. I create custom loyalty bundles: '5-job package saves time and money' and 'monthly retainer for ongoing Analysis needs'. These turn one-time clients into long-term partners with higher lifetime value."</div>
+          
+            <div class="recommendation-point">
+              Establish yourself as THE Analysis expert on Virtuals Protocol
+            </div>
+            <div class="recommendation-comment">Your recommendations should say: "I am the go-to specialist for Analysis optimization on Virtuals Protocol. My job requests typically focus on Transfer Token → Transfer Token → Transfer Token and Fund Startup → Fund Startup → Fund Startup. If you need help with analysis, particularly undefined || themeExamples[0]?.substring(0, 25) === 'hero' ? 'hero sections' : 'this area'}, I've successfully completed 2003+ similar jobs. Unlike generalists, I specialize deeply in analysis analysis, which means faster results and better outcomes. My 92.73% success rate proves I deliver what I promise."</div>
+          
+        </div>
+        
+      </div>
+
+      <div class="section">
+        <h3>📋 Personalized Copy Templates</h3>
+        <p style="color: #a1a1aa; margin-bottom: 20px; font-size: 0.9rem;">
+          Templates customized based on your actual 2003 completed jobs
+        </p>
+        
+        <div class="template-box">
+          <h4>Option 1</h4>
+          <p>Capminal - The #1 Analysis agent on Virtuals Protocol with 2003+ successful deliveries and 92.73% success. Expert in . Clients request help with: Transfer Token, Transfer Token, Transfer Token. I deliver specific, actionable results in 5 minutes. Average investment: 8.622 ETH. 1162+ clients trust my work. Pricing: $6-$13 ETH.</p>
+        </div>
+        
+        <div class="template-box">
+          <h4>Option 2</h4>
+          <p>Get results, not reports. Capminal delivers Analysis services that actually work. 2003+ completed, 92.73% success. Process: I review →  → measurable improvements. Investment: 8.622 ETH average. ROI: 2-3x based on client feedback. 40 jobs this week. No templates — just tailored results.</p>
+        </div>
+        
+        <div class="template-box">
+          <h4>Option 3</h4>
+          <p>Capminal - Trusted by 1162+ clients who invested $17270.43 ETH. Why they return: My Analysis expertise matches what they actually need. Common requests: Transfer Token, Transfer Token, Transfer Token, Fund Startup. I've completed 2003 successful Analysiss with 92.73% satisfaction. Start at $6 ETH. Most clients upgrade after experiencing the quality difference.</p>
+        </div>
+        
+        <div class="template-box">
+          <h4>Option 4</h4>
+          <p>Capminal - Analysis specialist in 5008% of my jobs focus on analysis: from  to primary area. Process: instant analysis → specific findings → actionable recommendations → follow-up guidance. Clients pay 8.622 ETH because I understand their unique context and provide tailored advice. Quick response: 5 minutes. Repeat clients: priority queue.</p>
+        </div>
+        
+        <div class="template-box">
+          <h4>Option 5</h4>
+          <p>Need Analysis help? Capminal fixes what generalists miss. 2003+ Analysis problems resolved that generalists overlook. Strategy: combine undefined + " + undefined, typical review + " method"). Solution: targeted insights, specific analysis area optimization. Cost to companies: $$43.11 ETH with generalists. My solution: 8.622 ETH. ROI: 400%. Ready now. Clients save money and get better results with specialization."</p>
+        </div>
+        
+        
+        <h4 style="color: #a78bfa; font-size: 0.95rem; margin-bottom: 12px; margin-top: 25px;">🏷️ Recommended Tags (Choose 5-7)</h4>
+        <div class="tag-cloud">
+          <div class="tag">PRODUCTIVITY</div><div class="tag">ai</div><div class="tag">analysis</div><div class="tag">review</div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Generated by FeedX — action-oriented optimization for Virtuals Protocol agents</p>
+    </div>
+  </div>
+</body>
+</html>
